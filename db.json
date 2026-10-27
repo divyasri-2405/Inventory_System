@@ -1,0 +1,53 @@
+{
+  "products": [
+    {
+      "id": "1",
+      "name": "Laptop",
+      "category": "Electronics",
+      "price": 45000,
+      "quantity": 12,
+      "supplier": "Tech Solutions"
+    },
+    {
+      "id": "2",
+      "name": "Mouse",
+      "category": "Accessories",
+      "price": 500,
+      "quantity": 4,
+      "supplier": "Digital Supplies"
+    },
+    {
+      "id": "3",
+      "name": "Keyboard",
+      "category": "Accessories",
+      "price": 1200,
+      "quantity": 8,
+      "supplier": "Tech Solutions"
+    }
+  ],
+  "suppliers": [
+    {
+      "id": "1",
+      "name": "Ravi Kumar",
+      "company": "Tech Solutions",
+      "email": "ravi@example.com",
+      "phone": "9876543210"
+    },
+    {
+      "id": "2",
+      "name": "Priya Sharma",
+      "company": "Digital Supplies",
+      "email": "priya@example.com",
+      "phone": "9876501234"
+    }
+  ],
+  "users": [
+    {
+      "username": "sdfsd",
+      "email": "sd@gmail.com",
+      "password": "ssdd23",
+      "id": "xAH2fXxfOJ8"
+    }
+  ],
+  "$schema": "./node_modules/json-server/schema.json"
+}

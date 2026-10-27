@@ -1,0 +1,547 @@
+
+/* GLOBAL STYLES */
+* {
+  box-sizing: border-box;
+}
+
+html,
+body,
+#root {
+  width: 100%;
+  min-height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: Arial, Helvetica, sans-serif;
+  background: #faf7f9;
+  color: #302631;
+}
+
+/* NAVBAR */
+.Navbar {
+  width: 100%;
+  margin: 0;
+  background-color: palevioletred;
+  padding: 15px 50px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 30px;
+  flex-wrap: nowrap;
+  box-shadow: 0 3px 12px rgba(100, 30, 60, 0.15);
+}
+
+/* COMPANY BRAND */
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  text-decoration: none;
+  flex-shrink: 0;
+}
+
+/* LOGO */
+.brand-icon {
+  width: 43px;
+  height: 43px;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: white;
+  color: palevioletred;
+  border-radius: 12px;
+  box-shadow: 0 3px 8px rgba(80, 20, 50, 0.18);
+  transition: transform 0.3s ease,
+              border-radius 0.3s ease,
+              box-shadow 0.3s ease;
+}
+
+.brand-letter {
+  font-size: 27px;
+  font-weight: 800;
+  font-style: italic;
+}
+
+.brand-dot {
+  position: absolute;
+  width: 9px;
+  height: 9px;
+  top: 5px;
+  right: 5px;
+  background: #ffd166;
+  border: 2px solid white;
+  border-radius: 50%;
+}
+
+.brand:hover .brand-icon {
+  transform: rotate(-8deg) scale(1.08);
+  border-radius: 50%;
+  box-shadow: 0 0 14px rgba(255, 255, 255, 0.6);
+}
+
+/* COMPANY NAME */
+.brand-text h2 {
+  margin: 0;
+  color: white;
+  font-size: 23px;
+  font-weight: 800;
+  letter-spacing: 0.5px;
+  line-height: 1.1;
+  transition: letter-spacing 0.3s ease;
+}
+
+.brand-text h2 span {
+  color: #ffe082;
+}
+
+.brand:hover .brand-text h2 {
+  letter-spacing: 1.5px;
+}
+
+.brand-text p {
+  margin: 4px 0 0;
+  color: white;
+  opacity: 0.9;
+  font-size: 9px;
+  letter-spacing: 0.5px;
+  white-space: nowrap;
+}
+
+/* NAVIGATION LINKS */
+.Navlinks {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  flex-direction: row;
+  gap: 12px;
+  flex-wrap: nowrap;
+  white-space: nowrap;
+}
+
+.Navlinks a {
+  color: aliceblue;
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 14px;
+  transition: transform 0.2s ease,
+              color 0.2s ease;
+}
+
+.Navlinks a:hover {
+  color: yellow;
+  transform: translateY(-2px);
+}
+
+/* NAVBAR BUTTON */
+.Navlinks button {
+  background: white;
+  color: #8c315c;
+  border: none;
+  border-radius: 7px;
+  padding: 10px 14px;
+  cursor: pointer;
+  font: inherit;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.Navlinks button:hover {
+  background: #ffe6f0;
+}
+
+/* MAIN CONTAINER */
+.container {
+  max-width: 1150px;
+  width: 92%;
+  margin: 32px auto;
+  min-height: 65vh;
+}
+
+/* HOME PAGE */
+.hero {
+  background: #f5e0eb;
+  border-radius: 16px;
+  padding: 35px;
+  margin-bottom: 30px;
+}
+
+.hero h1 {
+  font-size: clamp(28px, 4vw, 42px);
+  margin: 10px 0;
+}
+
+.hero p {
+  line-height: 1.7;
+}
+
+.eyebrow {
+  color: #983c68;
+  font-weight: bold;
+  letter-spacing: 2px;
+}
+
+.primary-link {
+  display: inline-block;
+  background: #a83d70;
+  color: white;
+  text-decoration: none;
+  border-radius: 7px;
+  padding: 11px 16px;
+  font-weight: 600;
+}
+
+.primary-link:hover {
+  background: #852c58;
+}
+
+/* DASHBOARD STATISTICS */
+.stats {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 18px;
+  margin: 20px 0;
+}
+
+.stat-card,
+.panel,
+.form-card,
+.record-card {
+  background: white;
+  padding: 20px;
+  border: 1px solid #eadfe5;
+  border-radius: 12px;
+  box-shadow: 0 3px 12px #3822380a;
+}
+
+.stat-card p {
+  color: #756673;
+}
+
+.stat-card h2 {
+  color: #a83d70;
+}
+
+.panel {
+  margin-top: 20px;
+}
+
+/* PAGE HEADINGS */
+.page-heading {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 20px;
+}
+
+/* GENERAL FORMS */
+.form-card {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  max-width: 650px;
+  margin: 20px 0;
+}
+
+.form-card label {
+  font-weight: 600;
+  margin-top: 6px;
+}
+
+input,
+textarea {
+  width: 100%;
+  padding: 11px 12px;
+  border: 1px solid #d8cbd3;
+  border-radius: 7px;
+  font: inherit;
+  background: white;
+}
+
+input:focus,
+textarea:focus {
+  outline: 2px solid #d88ab0;
+  border-color: #a83d70;
+}
+
+.search {
+  max-width: 450px;
+  margin: 10px 0 20px;
+}
+
+/* GENERAL BUTTONS */
+button {
+  background: #a83d70;
+  color: white;
+  border: none;
+  border-radius: 7px;
+  padding: 10px 14px;
+  cursor: pointer;
+  font: inherit;
+  font-weight: 600;
+}
+
+button:hover {
+  opacity: 0.88;
+}
+
+/* ACTIONS */
+.actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.actions a {
+  color: #9a3265;
+  font-weight: 600;
+}
+
+.danger {
+  background: #b52e3d;
+  color: white;
+}
+
+.secondary {
+  background: #777;
+}
+
+/* RECORD LIST */
+.record-list {
+  display: grid;
+  gap: 14px;
+  margin-top: 18px;
+}
+
+.record-card {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.record-card h3 {
+  margin-top: 0;
+}
+
+.record-card p {
+  color: #655863;
+  overflow-wrap: anywhere;
+}
+
+/* TABLES */
+.table-wrap {
+  overflow-x: auto;
+  background: white;
+  border-radius: 10px;
+  border: 1px solid #eadfe5;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  min-width: 780px;
+}
+
+th,
+td {
+  text-align: left;
+  padding: 14px;
+  border-bottom: 1px solid #eee5eb;
+}
+
+th {
+  background: #f5e0eb;
+}
+
+/* STOCK STATUS */
+.status {
+  display: inline-block;
+  padding: 5px 9px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: bold;
+}
+
+.low {
+  background: #fde4e4;
+  color: #a52230;
+}
+
+.good {
+  background: #e1f4e6;
+  color: #216c38;
+}
+
+/* LOGIN AND REGISTER CARD */
+.auth-card {
+  width: 100%;
+  max-width: 650px;
+  margin: 30px auto;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  background: white;
+  padding: 25px;
+  border: 1px solid #eadfe5;
+  border-radius: 12px;
+  box-shadow: 0 3px 12px rgba(56, 34, 56, 0.04);
+}
+
+.auth-card h2 {
+  color: #8c315c;
+  margin: 0 0 5px;
+}
+
+.auth-card > p {
+  line-height: 1.6;
+  margin: 0 0 8px;
+}
+
+/* LOGIN AND REGISTER FORM */
+.auth-card form {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.auth-card form label {
+  font-weight: 600;
+  margin-top: 6px;
+}
+
+.auth-card form input {
+  width: 100%;
+  padding: 11px 12px;
+  border: 1px solid #d8cbd3;
+  border-radius: 7px;
+  font: inherit;
+}
+
+.auth-card form button {
+  margin-top: 10px;
+}
+
+.auth-card > p:last-child {
+  margin-top: 10px;
+}
+
+.auth-card a {
+  color: #9a3265;
+  font-weight: 600;
+}
+
+/* ERROR AND SUCCESS MESSAGES */
+.error {
+  color: #b42332;
+  background: #fde9eb;
+  padding: 10px;
+  border-radius: 6px;
+}
+
+.success {
+  color: #206b3b;
+  background: #e5f5e9;
+  padding: 10px;
+  border-radius: 6px;
+}
+
+/* NOT FOUND PAGE */
+.not-found {
+  text-align: center;
+  padding: 30px 0;
+}
+
+.not-found img {
+  width: min(420px, 85%);
+  height: auto;
+}
+
+/* FOOTER */
+.footer {
+  text-align: center;
+  background: #f1e2e9;
+  color: #674659;
+  padding: 22px;
+  margin-top: 35px;
+}
+
+/* MEDIUM SCREENS */
+@media (max-width: 1050px) {
+  .Navbar {
+    padding: 12px 20px;
+    gap: 10px;
+  }
+
+  .brand-icon {
+    width: 36px;
+    height: 36px;
+  }
+
+  .brand-letter {
+    font-size: 23px;
+  }
+
+  .brand-text h2 {
+    font-size: 19px;
+  }
+
+  .brand-text p {
+    font-size: 8px;
+  }
+
+  .Navlinks {
+    gap: 9px;
+  }
+
+  .Navlinks a {
+    font-size: 12px;
+  }
+}
+
+/* TABLETS */
+@media (max-width: 800px) {
+  .stats {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .page-heading {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+}
+
+/* MOBILE */
+@media (max-width: 600px) {
+  .Navbar {
+    overflow-x: auto;
+    justify-content: flex-start;
+    padding: 12px 16px;
+  }
+
+  .Navlinks {
+    justify-content: flex-start;
+    gap: 12px;
+  }
+
+  .stats {
+    grid-template-columns: 1fr;
+  }
+
+  .hero {
+    padding: 22px;
+  }
+
+  .container {
+    width: 94%;
+  }
+
+  .auth-card {
+    padding: 20px;
+  }
+}
