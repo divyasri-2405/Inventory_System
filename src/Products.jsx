@@ -1,42 +1,36 @@
-
-import { useState, useEffect } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
-import axios from 'axios';
+import { useState, useEffect } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { getProducts, saveProducts } from "./data/storage";
 
 function Products() {
     const [products, setProducts] = useState([]);
-    const [search, setSearch] = useState('');
+    const [search, setSearch] = useState("");
 
     const navigate = useNavigate();
-    const user = localStorage.getItem('user');
 
-    function getProducts() {
-        axios.get('http://localhost:3000/products')
-            .then(response => setProducts(response.data))
-            .catch(error => console.log(error));
+    const user = localStorage.getItem("user");
+
+    function loadProducts() {
+        setProducts(getProducts());
     }
 
     useEffect(() => {
-        getProducts();
+        loadProducts();
     }, []);
 
-    function checkLogin() {
-        if (!user) {
-            navigate('/login');
-            return false;
-        }
-        return true;
-    }
-
     function deleteProduct(id) {
-        if (!checkLogin()) {
+        if (!user) {
+            navigate("/login");
             return;
         }
 
-        if (window.confirm('Are you sure you want to delete this product?')) {
-            axios.delete(`http://localhost:3000/products/${id}`)
-                .then(() => getProducts())
-                .catch(error => console.log(error));
+        if (window.confirm("Are you sure you want to delete this product?")) {
+            const updatedProducts = products.filter(
+                product => product.id !== id
+            );
+
+            saveProducts(updatedProducts);
+            setProducts(updatedProducts);
         }
     }
 
@@ -91,14 +85,14 @@ function Products() {
                                         <div className="actions">
                                             <Link
                                                 to="/addproducts"
-                                                state={{ product: product }}
+                                                state={{ product }}
                                                 className="edit-link"
                                             >
                                                 Edit
                                             </Link>
 
                                             <button
-                                                className="delete-button"
+                                                className="danger"
                                                 onClick={() =>
                                                     deleteProduct(product.id)
                                                 }

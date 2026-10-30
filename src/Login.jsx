@@ -1,55 +1,39 @@
-
-import { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
-import axios from 'axios';
+import { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { getUsers } from "./data/storage";
 
 function Login() {
     const navigate = useNavigate();
 
-    const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
-    const [error, setError] = useState('');
+    const [email, setEmail] = useState("");
+    const [password, setPassword] = useState("");
+    const [error, setError] = useState("");
 
-    async function handleLogin(e) {
+    function handleLogin(e) {
         e.preventDefault();
-        setError('');
+        setError("");
 
-        try {
-            const response = await axios.get(
-                'http://localhost:3000/users',
-                {
-                    params: {
-                        email: email.trim(),
-                        password: password
-                    }
-                }
+        const users = getUsers();
+
+        const user = users.find(
+            (u) =>
+                u.email.toLowerCase() === email.trim().toLowerCase() &&
+                u.password === password
+        );
+
+        if (user) {
+            localStorage.setItem(
+                "user",
+                JSON.stringify({
+                    id: user.id,
+                    username: user.username,
+                    email: user.email
+                })
             );
 
-            if (response.data.length > 0) {
-                const user = response.data[0];
-
-                localStorage.setItem(
-                    'user',
-                    JSON.stringify({
-                        id: user.id,
-                        username: user.username,
-                        email: user.email
-                    })
-                );
-
-                // Update Navbar after successful login
-                if (window.onuserlogin) {
-                    window.onuserlogin();
-                }
-
-                navigate('/', { replace: true });
-            } else {
-                setError('Invalid email or password.');
-            }
-        } catch (err) {
-            setError(
-                'Unable to connect. Please start JSON Server.'
-            );
+            navigate("/", { replace: true });
+        } else {
+            setError("Invalid email or password. Please register first.");
         }
     }
 
@@ -62,6 +46,7 @@ function Login() {
 
             <form onSubmit={handleLogin}>
                 <label>Email</label>
+
                 <input
                     type="email"
                     value={email}
@@ -71,6 +56,7 @@ function Login() {
                 />
 
                 <label>Password</label>
+
                 <input
                     type="password"
                     value={password}
@@ -83,7 +69,7 @@ function Login() {
             </form>
 
             <p>
-                Don't have an account?{' '}
+                Don't have an account?{" "}
                 <Link to="/register">Register</Link>
             </p>
         </div>

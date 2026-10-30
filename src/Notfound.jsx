@@ -12,7 +12,7 @@ function Notfound(){
                 <br/>
                 <p>The page you are looking for does not exist.</p>
                 <br/>
-                <button onClick={()=>hello('/')}>Home Page</button>
+                <button onClick={()=>navigate('/')}>Home Page</button>
             </center>
         </div>
     )

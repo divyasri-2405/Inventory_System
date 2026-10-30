@@ -1,19 +1,19 @@
-import { useEffect, useState } from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
-import axios from 'axios';
+import { useEffect, useState } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
+import { getSuppliers, saveSuppliers } from "./data/storage";
 
 const emptyForm = {
-    name: '',
-    company: '',
-    email: '',
-    phone: ''
+    name: "",
+    company: "",
+    email: "",
+    phone: ""
 };
 
 function AddSupplier() {
     const [formdata, setFormData] = useState({ ...emptyForm });
-    const [editid, setEditid] = useState('');
-    const [error, setError] = useState('');
-    const [message, setMessage] = useState('');
+    const [editid, setEditid] = useState("");
+    const [error, setError] = useState("");
+    const [message, setMessage] = useState("");
 
     const location = useLocation();
     const navigate = useNavigate();
@@ -23,6 +23,7 @@ function AddSupplier() {
 
         if (supplier) {
             setEditid(supplier.id);
+
             setFormData({
                 name: supplier.name,
                 company: supplier.company,
@@ -30,12 +31,12 @@ function AddSupplier() {
                 phone: supplier.phone
             });
         } else {
-            setEditid('');
+            setEditid("");
             setFormData({ ...emptyForm });
         }
 
-        setError('');
-        setMessage('');
+        setError("");
+        setMessage("");
     }, [location.state]);
 
     function handleChange(e) {
@@ -47,10 +48,11 @@ function AddSupplier() {
         }));
     }
 
-    async function handleSubmit(e) {
+    function handleSubmit(e) {
         e.preventDefault();
-        setError('');
-        setMessage('');
+
+        setError("");
+        setMessage("");
 
         const validEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(
             formdata.email.trim()
@@ -63,65 +65,60 @@ function AddSupplier() {
             !/^\d{10}$/.test(formdata.phone.trim())
         ) {
             setError(
-                'Enter a valid name, company, email and 10-digit phone number.'
+                "Enter a valid name, company, email and 10-digit phone number."
             );
             return;
         }
 
+        const suppliers = getSuppliers();
+
         const supplier = {
+            id: editid || Date.now().toString(),
             name: formdata.name.trim(),
             company: formdata.company.trim(),
             email: formdata.email.trim(),
             phone: formdata.phone.trim()
         };
 
-        try {
-            if (editid) {
-                await axios.put(
-                    `http://localhost:3000/suppliers/${editid}`,
-                    { id: editid, ...supplier }
-                );
-                setMessage('Supplier updated successfully.');
-            } else {
-                await axios.post(
-                    'http://localhost:3000/suppliers',
-                    supplier
-                );
-                setMessage('Supplier added successfully.');
-            }
+        let updatedSuppliers;
 
-            setFormData({ ...emptyForm });
-            setEditid('');
+        if (editid) {
+            updatedSuppliers = suppliers.map(item =>
+                item.id === editid ? supplier : item
+            );
 
-            navigate('/addsuppliers', {
-                replace: true,
-                state: null
-            });
-        } catch (err) {
-            setError('Unable to save supplier. Please try again.');
+            setMessage("Supplier updated successfully.");
+        } else {
+            updatedSuppliers = [...suppliers, supplier];
+
+            setMessage("Supplier added successfully.");
         }
+
+        saveSuppliers(updatedSuppliers);
+
+        setFormData({ ...emptyForm });
+        setEditid("");
+
+        navigate("/suppliers");
     }
 
     function cancelEdit() {
-        setEditid('');
+        setEditid("");
         setFormData({ ...emptyForm });
-        setError('');
-        setMessage('');
+        setError("");
+        setMessage("");
 
-        navigate('/addsuppliers', {
-            replace: true,
-            state: null
-        });
+        navigate("/suppliers");
     }
 
     return (
         <section>
-            <h1>{editid ? 'Edit Supplier' : 'Add Supplier'}</h1>
+            <h1>{editid ? "Edit Supplier" : "Add Supplier"}</h1>
 
             <p>
                 {editid
                     ? `Editing supplier ID: ${editid}`
-                    : 'Enter details to add a new supplier.'}
+                    : "Enter details to add a new supplier."}
             </p>
 
             {error && <p className="error">{error}</p>}
@@ -129,6 +126,7 @@ function AddSupplier() {
 
             <form className="form-card" onSubmit={handleSubmit}>
                 <label>Supplier Name</label>
+
                 <input
                     name="name"
                     value={formdata.name}
@@ -138,6 +136,7 @@ function AddSupplier() {
                 />
 
                 <label>Company</label>
+
                 <input
                     name="company"
                     value={formdata.company}
@@ -147,6 +146,7 @@ function AddSupplier() {
                 />
 
                 <label>Email</label>
+
                 <input
                     type="email"
                     name="email"
@@ -157,6 +157,7 @@ function AddSupplier() {
                 />
 
                 <label>Phone</label>
+
                 <input
                     type="tel"
                     name="phone"
@@ -169,7 +170,7 @@ function AddSupplier() {
 
                 <div className="actions">
                     <button type="submit">
-                        {editid ? 'Update Supplier' : 'Add Supplier'}
+                        {editid ? "Update Supplier" : "Add Supplier"}
                     </button>
 
                     {editid && (
@@ -187,7 +188,7 @@ function AddSupplier() {
             <button
                 type="button"
                 className="secondary"
-                onClick={() => navigate('/suppliers')}
+                onClick={() => navigate("/suppliers")}
             >
                 View Suppliers
             </button>

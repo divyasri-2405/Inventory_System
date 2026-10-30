@@ -40,19 +40,5 @@
       "email": "priya@example.com",
       "phone": "9876501234"
     }
-  ],
-  "users": [
-    {
-      "username": "sdfsd",
-      "email": "sd@gmail.com",
-      "password": "ssdd23",
-      "id": "xAH2fXxfOJ8"
-    },
-    {
-      "username": "divya",
-      "email": "divya@gmail.com",
-      "password": "md1234",
-      "id": "Pb-c4Npgk64"
-    }
   ]
 }

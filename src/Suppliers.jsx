@@ -1,35 +1,36 @@
-
-import { useState, useEffect } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
-import axios from 'axios';
+import { useState, useEffect } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { getSuppliers, saveSuppliers } from "./data/storage";
 
 function Suppliers() {
     const [suppliers, setSuppliers] = useState([]);
-    const [search, setSearch] = useState('');
+    const [search, setSearch] = useState("");
 
     const navigate = useNavigate();
-    const user = localStorage.getItem('user');
 
-    function getSuppliers() {
-        axios.get('http://localhost:3000/suppliers')
-            .then(response => setSuppliers(response.data))
-            .catch(error => console.log(error));
+    const user = localStorage.getItem("user");
+
+    function loadSuppliers() {
+        setSuppliers(getSuppliers());
     }
 
     useEffect(() => {
-        getSuppliers();
+        loadSuppliers();
     }, []);
 
     function deleteSupplier(id) {
         if (!user) {
-            navigate('/login');
+            navigate("/login");
             return;
         }
 
-        if (window.confirm('Are you sure you want to delete this supplier?')) {
-            axios.delete(`http://localhost:3000/suppliers/${id}`)
-                .then(() => getSuppliers())
-                .catch(error => console.log(error));
+        if (window.confirm("Are you sure you want to delete this supplier?")) {
+            const updatedSuppliers = suppliers.filter(
+                supplier => supplier.id !== id
+            );
+
+            saveSuppliers(updatedSuppliers);
+            setSuppliers(updatedSuppliers);
         }
     }
 
@@ -82,14 +83,14 @@ function Suppliers() {
                                         <div className="actions">
                                             <Link
                                                 to="/addsuppliers"
-                                                state={{ supplier: supplier }}
+                                                state={{ supplier }}
                                                 className="edit-link"
                                             >
                                                 Edit
                                             </Link>
 
                                             <button
-                                                className="delete-button"
+                                                className="danger"
                                                 onClick={() =>
                                                     deleteSupplier(supplier.id)
                                                 }

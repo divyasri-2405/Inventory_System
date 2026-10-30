@@ -1,20 +1,20 @@
-import { useEffect, useState } from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
-import axios from 'axios';
+import { useEffect, useState } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
+import { getProducts, saveProducts } from "./data/storage";
 
 const emptyForm = {
-    name: '',
-    category: '',
-    price: '',
-    quantity: '',
-    supplier: ''
+    name: "",
+    category: "",
+    price: "",
+    quantity: "",
+    supplier: ""
 };
 
 function AddProduct() {
     const [formdata, setFormData] = useState({ ...emptyForm });
-    const [editid, setEditid] = useState('');
-    const [error, setError] = useState('');
-    const [message, setMessage] = useState('');
+    const [editid, setEditid] = useState("");
+    const [error, setError] = useState("");
+    const [message, setMessage] = useState("");
 
     const location = useLocation();
     const navigate = useNavigate();
@@ -24,6 +24,7 @@ function AddProduct() {
 
         if (product) {
             setEditid(product.id);
+
             setFormData({
                 name: product.name,
                 category: product.category,
@@ -32,12 +33,12 @@ function AddProduct() {
                 supplier: product.supplier
             });
         } else {
-            setEditid('');
+            setEditid("");
             setFormData({ ...emptyForm });
         }
 
-        setError('');
-        setMessage('');
+        setError("");
+        setMessage("");
     }, [location.state]);
 
     function handleChange(e) {
@@ -49,30 +50,32 @@ function AddProduct() {
         }));
     }
 
-    async function handleSubmit(e) {
+    function handleSubmit(e) {
         e.preventDefault();
-        setError('');
-        setMessage('');
+
+        setError("");
+        setMessage("");
 
         if (
             !formdata.name.trim() ||
             !formdata.category.trim() ||
             !formdata.supplier.trim() ||
-            formdata.price === '' ||
-            formdata.quantity === '' ||
+            formdata.price === "" ||
+            formdata.quantity === "" ||
             !Number.isFinite(Number(formdata.price)) ||
             !Number.isFinite(Number(formdata.quantity)) ||
             Number(formdata.price) < 0 ||
             Number(formdata.quantity) < 0 ||
             !Number.isInteger(Number(formdata.quantity))
         ) {
-            setError(
-                'Enter valid details and non-negative price and quantity.'
-            );
+            setError("Enter valid product details.");
             return;
         }
 
+        const products = getProducts();
+
         const product = {
+            id: editid || Date.now().toString(),
             name: formdata.name.trim(),
             category: formdata.category.trim(),
             price: Number(formdata.price),
@@ -80,53 +83,45 @@ function AddProduct() {
             supplier: formdata.supplier.trim()
         };
 
-        try {
-            if (editid) {
-                await axios.put(
-                    `http://localhost:3000/products/${editid}`,
-                    { id: editid, ...product }
-                );
-                setMessage('Product updated successfully.');
-            } else {
-                await axios.post(
-                    'http://localhost:3000/products',
-                    product
-                );
-                setMessage('Product added successfully.');
-            }
+        let updatedProducts;
 
-            setFormData({ ...emptyForm });
-            setEditid('');
+        if (editid) {
+            updatedProducts = products.map(item =>
+                item.id === editid ? product : item
+            );
 
-            navigate('/addproducts', {
-                replace: true,
-                state: null
-            });
-        } catch (err) {
-            setError('Unable to save product. Please try again.');
+            setMessage("Product updated successfully.");
+        } else {
+            updatedProducts = [...products, product];
+
+            setMessage("Product added successfully.");
         }
+
+        saveProducts(updatedProducts);
+
+        setFormData({ ...emptyForm });
+        setEditid("");
+
+        navigate("/products");
     }
 
     function cancelEdit() {
-        setEditid('');
+        setEditid("");
         setFormData({ ...emptyForm });
-        setError('');
-        setMessage('');
+        setError("");
+        setMessage("");
 
-        navigate('/addproducts', {
-            replace: true,
-            state: null
-        });
+        navigate("/products");
     }
 
     return (
         <section>
-            <h1>{editid ? 'Edit Product' : 'Add Product'}</h1>
+            <h1>{editid ? "Edit Product" : "Add Product"}</h1>
 
             <p>
                 {editid
                     ? `Editing product ID: ${editid}`
-                    : 'Enter details to add a new product.'}
+                    : "Enter details to add a new product."}
             </p>
 
             {error && <p className="error">{error}</p>}
@@ -134,6 +129,7 @@ function AddProduct() {
 
             <form className="form-card" onSubmit={handleSubmit}>
                 <label>Product Name</label>
+
                 <input
                     name="name"
                     value={formdata.name}
@@ -143,6 +139,7 @@ function AddProduct() {
                 />
 
                 <label>Category</label>
+
                 <input
                     name="category"
                     value={formdata.category}
@@ -152,6 +149,7 @@ function AddProduct() {
                 />
 
                 <label>Price (₹)</label>
+
                 <input
                     type="number"
                     name="price"
@@ -163,6 +161,7 @@ function AddProduct() {
                 />
 
                 <label>Quantity</label>
+
                 <input
                     type="number"
                     name="quantity"
@@ -174,6 +173,7 @@ function AddProduct() {
                 />
 
                 <label>Supplier</label>
+
                 <input
                     name="supplier"
                     value={formdata.supplier}
@@ -184,7 +184,7 @@ function AddProduct() {
 
                 <div className="actions">
                     <button type="submit">
-                        {editid ? 'Update Product' : 'Add Product'}
+                        {editid ? "Update Product" : "Add Product"}
                     </button>
 
                     {editid && (
@@ -202,7 +202,7 @@ function AddProduct() {
             <button
                 type="button"
                 className="secondary"
-                onClick={() => navigate('/products')}
+                onClick={() => navigate("/products")}
             >
                 View Products
             </button>

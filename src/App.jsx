@@ -1,17 +1,16 @@
+import { BrowserRouter, Routes, Route } from "react-router-dom";
 
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
-
-import Navbar from './Navbar';
-import Home from './Home';
-import Login from './Login';
-import Register from './Register';
-import Products from './Products';
-import Suppliers from './Suppliers';
-import AddProduct from './AddProduct';
-import AddSupplier from './AddSupplier';
-import Contact from './Contact';
-import Notfound from './Notfound';
-import ProtectedRoute from './ProtectedRoute';
+import Navbar from "./Navbar";
+import Home from "./Home";
+import Login from "./Login";
+import Register from "./Register";
+import Products from "./Products";
+import Suppliers from "./Suppliers";
+import AddProduct from "./AddProduct";
+import AddSupplier from "./AddSupplier";
+import Contact from "./Contact";
+import Notfound from "./Notfound";
+import ProtectedRoute from "./ProtectedRoute";
 
 function App() {
     return (
@@ -21,14 +20,15 @@ function App() {
             <main className="container">
                 <Routes>
                     <Route path="/" element={<Home />} />
+
                     <Route path="/login" element={<Login />} />
+
                     <Route path="/register" element={<Register />} />
 
-                    {/* Anyone can view these lists */}
                     <Route path="/products" element={<Products />} />
+
                     <Route path="/suppliers" element={<Suppliers />} />
 
-                    {/* Login required for these pages */}
                     <Route
                         path="/addproducts"
                         element={

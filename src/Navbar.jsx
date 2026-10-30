@@ -1,23 +1,23 @@
-
-import { Link, useNavigate } from 'react-router-dom';
-import { useState } from 'react';
+import { Link, useNavigate, useLocation } from "react-router-dom";
+import { useEffect, useState } from "react";
 
 function Navbar() {
     const navigate = useNavigate();
-    const [user, setUser] = useState(localStorage.getItem('user'));
+    const location = useLocation();
 
-    function handleLogin() {
-        setUser(localStorage.getItem('user'));
-    }
+    const [user, setUser] = useState(
+        localStorage.getItem("user")
+    );
+
+    useEffect(() => {
+        setUser(localStorage.getItem("user"));
+    }, [location.pathname]);
 
     function handleLogout() {
-        localStorage.removeItem('user');
+        localStorage.removeItem("user");
         setUser(null);
-        navigate('/login');
+        navigate("/login");
     }
-
-    // Update Navbar when the login page returns a successful login
-    window.onuserlogin = handleLogin;
 
     return (
         <nav className="Navbar">
@@ -37,21 +37,27 @@ function Navbar() {
                 <Link to="/">Home</Link>
                 <Link to="/products">Products</Link>
                 <Link to="/suppliers">Suppliers</Link>
-                <Link to="/addproducts">Add Products</Link>
-                <Link to="/addsuppliers">Add Suppliers</Link>
-                <Link to="/contact">Contact</Link>
+
+                {user && (
+                    <>
+                        <Link to="/addproducts">Add Products</Link>
+                        <Link to="/addsuppliers">Add Suppliers</Link>
+                        <Link to="/contact">Contact</Link>
+
+                        <button
+                            type="button"
+                            onClick={handleLogout}
+                        >
+                            Logout
+                        </button>
+                    </>
+                )}
 
                 {!user && (
                     <>
                         <Link to="/login">Login</Link>
                         <Link to="/register">Register</Link>
                     </>
-                )}
-
-                {user && (
-                    <button type="button" onClick={handleLogout}>
-                        Logout
-                    </button>
                 )}
             </div>
         </nav>
